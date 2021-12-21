@@ -14,40 +14,55 @@ function App() {
   const [password, setPassword] = useState('')
   console.log(password)
 
-  const registerUser = async event  => {
-      console.log('register')
+  // const registerUser = async event  => {
+  //     console.log('register')
+  //   event.preventDefault()
+  //   const userData = {
+  //       "username" : username,
+  //       "email" : email,
+  //       "password" : password,
+  //   }
+
+
+
+  //   const response = await fetch('/api/auth/regester', {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       'Accept': 'application/json'
+  //     },
+  //     body: JSON.stringify({
+  //       username,
+  //       email,
+  //       password,
+  //     }),
+  //   })
+
+  //   const data = response.json()
+  //   console.log(data)
+
+  // }
+
+  async function registerUser(event) {
     event.preventDefault()
-    const userData = {
-        "username" : username,
-        "email" : email,
-        "password" : password,
-    }
 
-     await axios.post('http://localhost:3000/api/auth/regester',userData)
-    .then((response) => {
-        console.log(response.data)
+    const response = await fetch('http://localhost:3000/api/auth/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username,
+        email,
+        password,
+      }),
     })
-    .catch((err) => {
-        console.log(err)
-    })
 
-    // const response = await fetch('http://localhost:3000/api/auth/regester', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({
-    //     username,
-    //     email,
-    //     password,
-    //   }),
-    // })
-
-    // const data = await response.json()
-    // console.log(data)
+    const data = await response.json()
+    console.log(data)
 
     // if (data.auth === true) {
-    //   router.push('/hello')
+    //   history.push('/login')
     // }
   }
 

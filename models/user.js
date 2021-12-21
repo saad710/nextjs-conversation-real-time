@@ -56,7 +56,10 @@ var user = new Schema({
         type: Number,
         enum: [1, 2, 3],
       },
-});
+},
+{ timestamps: true },
+
+);
 
 mongoose.models = {};
 

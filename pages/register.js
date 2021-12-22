@@ -2,6 +2,7 @@ import { Button, Card, Grid, TextField } from '@mui/material'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 // import { Link, NavLink, useHistory } from 'react-router-dom'
+import Link from 'next/link'
 import { axios } from 'axios';
 
 function App() {
@@ -61,9 +62,9 @@ function App() {
     const data = await response.json()
     console.log(data)
 
-    // if (data.auth === true) {
-    //   history.push('/login')
-    // }
+    if (data.auth === true) {
+      router.push('/login')
+    }
   }
 
   return (
@@ -80,35 +81,35 @@ function App() {
       >
         <h1 style={{ color: 'white' }}>Register</h1>
         <span style={{ color: 'white' }}>Already Registered ? </span>
-        {/* <NavLink to="/login" style={{ textDecoration: 'none' }}>
+        <Link href="/login" passHref>
           <Button style={{ backgroundColor: '#f5fffa' }}>Login</Button>
-        </NavLink> */}
+        </Link>
         <form onSubmit={registerUser}>
           <TextField
-            variant="standard"
+            variant="outlined"
             value={username}
             onChange={(e) => setName(e.target.value)}
             type="text"
             placeholder="Name"
-            style={{ paddingTop: '1vh', width: '50vh' }}
+            style={{backgroundColor: 'white', borderRadius: '5px', margin:'0.5vh',padding:'0.5vh',width:"30vh" }}
           />
           <br />
           <TextField
-            variant="standard"
+            variant="outlined"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             type="email"
             placeholder="Email"
-            style={{ paddingTop: '1vh', width: '50vh' }}
+            style={{ backgroundColor: 'white', borderRadius: '5px', margin:'0.5vh',padding:'0.5vh',width:"30vh" }}
           />
           <br />
           <TextField
-            variant="standard"
+            variant="outlined"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             type="password"
             placeholder="Password"
-            style={{ paddingTop: '1vh', width: '50vh' }}
+            style={{ backgroundColor: 'white', borderRadius: '5px', margin:'0.5vh',padding:'0.5vh',width:"30vh" }}
           />
           <br />
           <Grid

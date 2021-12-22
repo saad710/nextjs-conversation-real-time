@@ -1,5 +1,7 @@
 import { Button, Card, Grid, TextField } from '@mui/material'
 import { useContext, useState } from 'react'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 
 
@@ -7,6 +9,7 @@ function App() {
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const router = useRouter()
 //   const { setUserData } = useContext(LoginContext)
 //   const { auth, setAuth } = useContext(AuthContext)
 
@@ -29,11 +32,11 @@ function App() {
 
     if (data.auth === true) {
       localStorage.setItem('token', data.token)
-      alert('Login successful')
-    //   window.location.href = '/messenger'
-      // history.push("/messenger")
+      // alert('Login successful')
+      router.push("/test")
     } else {
-      alert('Please check your username and password')
+      // alert('Please check your username and password')
+      router.push('/login')
     }
   }
 
@@ -56,37 +59,43 @@ function App() {
           alignItems="center"
         >
           <h1 style={{ color: 'white' }}>Login</h1>
-          {/* <NavLink to="/register" style={{ textDecoration: 'none' }}>
+          <Link href="/register" style={{ textDecoration: 'none' }} passHref>
             <Button style={{ backgroundColor: '#f5fffa' }}>Register</Button>
-          </NavLink> */}
+          </Link>
         </Grid>
         <form onSubmit={loginUser}>
           <TextField
-            variant="standard"
+            variant="outlined"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             type="email"
             placeholder="Email"
-            style={{ width: '30vh' }}
+            style={{backgroundColor: 'white', borderRadius: '5px', margin:'0.5vh',padding:'0.5vh',width:"30vh" }}
           />
           <br />
           <TextField
-            variant="standard"
+            variant="outlined"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             type="password"
             placeholder="Password"
-            style={{ paddingTop: '1vh', width: '30vh' }}
+            style={{backgroundColor: 'white', borderRadius: '5px', margin:'0.5vh',padding:'0.5vh',width:"30vh" }}
           />
           <br />
-          <Button
-            variant="contained"
-            type="submit"
-            style={{ marginTop: '1vh' }}
-            value="Login"
+          <Grid
+            container
+            direction="row"
+            justifyContent="flex-end"
+            alignItems="center"
           >
-            Login
-          </Button>
+            <Button
+			  variant="contained"
+              type="submit"
+			  style={{marginTop:"1vh"}}
+            >
+              Login
+            </Button>
+          </Grid>
         </form>
       </Card>
     </Grid>

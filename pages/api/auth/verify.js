@@ -9,9 +9,11 @@ const handler = async (req, res) => {
         // console.log(VerifyToken(req))
         // const { VerifyToken } = req.headers;
         // console.log(VerifyToken)
-        console.log({req:req.headers})
-        const token = req.headers['x-aceess-token'];
-        console.log({token})
+        console.log({req:req.headers['x-access-token']})
+
+        const requestToken = {req:req.headers['x-access-token']};
+        const token = requestToken.req
+        console.log(token)
         if (!token)
           return res.status(403).send({ auth: false, message: 'No token provided.' });
           

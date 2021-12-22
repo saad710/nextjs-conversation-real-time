@@ -23,6 +23,7 @@ const handler = async (req, res) => {
             res.status(500).json(err)
           }
       }
+    
     } else {
       res.status(422).send('req_method_not_supported');
     }

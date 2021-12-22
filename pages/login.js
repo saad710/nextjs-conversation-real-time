@@ -1,5 +1,5 @@
 import { Button, Card, Grid, TextField } from '@mui/material'
-import { useContext, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
@@ -39,6 +39,8 @@ function App() {
       router.push('/login')
     }
   }
+
+  
 
   return (
     <Grid

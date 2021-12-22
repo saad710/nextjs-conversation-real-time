@@ -2,15 +2,24 @@ import Conversation from "../../../models/conversation"
 import connectDB from "../../../middleware/mongodb"
 
 
-const handler = async (req, res) => {
+
+export default async (req, res) => {
+    switch(req.method){
+        case "GET":
+            await connectDB(getSpecific(req, res))
+            break;
+      
+    }
+}
+
+
+const getSpecific = async (req, res) => {
     if (req.method === 'GET') {
-        const {userId} = req.query;
-           if(userId){
-            console.log(req.query)
+        // const {userId} = req.params;
+        //    if(userId){
             try {
-                // const userId = req.query
                 const conversation = await Conversation.find({
-                    members: { $in: [userId] },
+                    members: { $in: [req.params.userId] },
                 })
                 console.log(conversation)
                 res.status(200).json(conversation);
@@ -19,10 +28,10 @@ const handler = async (req, res) => {
             }
            }
 
-    } 
+    // } 
     else {
         res.status(422).send('req_method_not_supported');
     }
 };
 
-export default connectDB(handler);
+// export default connectDB(handler);

@@ -6,12 +6,14 @@ import { UserContext } from '../context/AuthContext/LoginProvider';
 import Topbar from '../component/topbar/Topbar';
 import axios from 'axios';
 import Conversation from '../component/conversation/Conversation';
+import Message from '../component/message/Message';
+
 
 
 const Messenger = () => {
     const router = useRouter()
     const { user, dispatch } = useContext(UserContext)
-    const [conversation,setConversation] = useState([])
+    const [conversation, setConversation] = useState([])
     console.log(conversation)
     const [currentChat, setCurrentChat] = useState()
     const [messages, setMessages] = useState([])
@@ -56,36 +58,36 @@ const Messenger = () => {
 
     useEffect(() => {
         const getConversations = async () => {
-          try {
-            const res = await axios.get(
-              `http://localhost:3000/api/conversation/getSpecificUserConversation?userId=${user?._id}`,
-            )
-            setConversation(res?.data)
-            setCurrentChat(res?.data[0])
-            console.log(res.data)
-          } catch (err) {
-            console.log(err)
-          }
+            try {
+                const res = await axios.get(
+                    `http://localhost:3000/api/conversation/getSpecificUserConversation?userId=${user?._id}`,
+                )
+                setConversation(res?.data)
+                setCurrentChat(res?.data[0])
+                console.log(res.data)
+            } catch (err) {
+                console.log(err)
+            }
         }
         getConversations()
-      }, [user,setCurrentChat])
+    }, [user, setCurrentChat])
 
-      useEffect(() => {
+    useEffect(() => {
         const getMessages = async () => {
-          try {
-            const res = await axios.get(
-              `http://localhost:3000/api/message/getMessage?conversationId=${currentChat?._id}`,
-            )
-            console.log(res.data)
-            setMessages(res?.data)
-          } catch (err) {
-            console.log(err)
-          }
+            try {
+                const res = await axios.get(
+                    `http://localhost:3000/api/message/getMessage?conversationId=${currentChat?._id}`,
+                )
+                console.log(res.data)
+                setMessages(res?.data)
+            } catch (err) {
+                console.log(err)
+            }
         }
         getMessages()
-      }, [currentChat])
-    
-    
+    }, [currentChat])
+
+
     //   useEffect(() => {
     //     const getMessages = async () => {
     //       try {
@@ -115,13 +117,24 @@ const Messenger = () => {
     else {
         return (
             <div>
-                <Topbar handleLogout={handleLogout} user={user}/>
+                <Topbar handleLogout={handleLogout} user={user} />
                 <Grid container>
-                    {conversation.map((conv,index)=> (
-                    <Grid item xs={4} key={index}>
-                           <Conversation conversation = {conv} currentUser={user}/> 
+                    <Grid item xs={2} style={{ padding: "2vh" }}>
+                        {conversation.map((conv, index) => (
+                            <div key={index}>
+                                <Conversation conversation={conv} currentUser={user} />
+                            </div>
+                        ))}
                     </Grid>
-                    ))}
+                    {
+                        currentChat && (
+                            <Grid item xs={4} style={{ padding: "2vh" }}>
+                                {messages.map((message, index) => (
+                                    <Message key={index} message={message} own={user._id === message.sender} />
+                                ))}
+                            </Grid>
+                        )
+                    }
                 </Grid>
             </div>
         );

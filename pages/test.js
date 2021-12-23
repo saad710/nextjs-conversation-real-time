@@ -61,7 +61,7 @@ const Test = () => {
     else {
         return (
             <div>
-                <h1>User LoggedIn</h1>
+                <h1>{user?.username}</h1>
                 <Button onClick={handleLogout}>logout</Button>
             </div>
         );

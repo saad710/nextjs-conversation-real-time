@@ -33,7 +33,7 @@ function App() {
     if (data.auth === true) {
       localStorage.setItem('token', data.token)
       // alert('Login successful')
-      router.push("/test")
+      router.push("/messenger")
     } else {
       // alert('Please check your username and password')
       router.push('/login')

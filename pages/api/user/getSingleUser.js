@@ -5,7 +5,7 @@ import connectDB from "../../../middleware/mongodb"
 const handler = async (req, res) => {
     if (req.method === 'GET') {
         const {userId,username} = req.query;
-           if(userId && username){
+           if(userId){
             console.log(req.query)
             try {
                 // const userId = req.query

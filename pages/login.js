@@ -72,7 +72,7 @@ function App() {
             onChange={(e) => setEmail(e.target.value)}
             type="email"
             placeholder="Email"
-            style={{backgroundColor: 'white', borderRadius: '5px', margin:'0.5vh',padding:'0.5vh',width:"30vh" }}
+            style={{backgroundColor: 'white', borderRadius: '5px', margin:'0.5vh',padding:'0.5vh',width:"35vh" }}
           />
           <br />
           <TextField
@@ -81,7 +81,7 @@ function App() {
             onChange={(e) => setPassword(e.target.value)}
             type="password"
             placeholder="Password"
-            style={{backgroundColor: 'white', borderRadius: '5px', margin:'0.5vh',padding:'0.5vh',width:"30vh" }}
+            style={{backgroundColor: 'white', borderRadius: '5px', margin:'0.5vh',padding:'0.5vh',width:"35vh" }}
           />
           <br />
           <Grid

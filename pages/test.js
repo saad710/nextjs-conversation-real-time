@@ -1,13 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useRouter } from 'next/router'
 import { Button } from '@mui/material';
 import jwt from 'jsonwebtoken'
+import { UserContext } from '../context/AuthContext/LoginProvider';
+
 
 const Test = () => {
     const router = useRouter()
+    const {user , dispatch} = useContext(UserContext)
+    console.log(user)
 
-    const [userData, setUserData] = useState(null)
-    console.log(userData)
+    // const [userData, setUserData] = useState(null)
+    // console.log(userData)
     async function populateQuote() {
         const req = await fetch('http://localhost:3000/api/auth/verify', {
             headers: {
@@ -18,7 +22,8 @@ const Test = () => {
         const data = await req.json()
         console.log(data)
         if (data) {
-            setUserData(data)
+            // setUserData(data)
+            dispatch({type:'Login_Success', result: data})
         } else {
             alert(data.error)
         }
@@ -34,6 +39,7 @@ const Test = () => {
                 router.replace('/login')
             } else {
                 populateQuote()
+                
             }
         }
         else {
@@ -41,14 +47,15 @@ const Test = () => {
         }
     }, [])
 
+  
+
     const handleLogout = () => {
         localStorage.removeItem('token')
         router.replace("/login")
         // history.replace('/login')
     }
 
-
-    if (!userData) {
+    if (!user) {
         return null;
     }
     else {
@@ -62,3 +69,5 @@ const Test = () => {
 };
 
 export default Test;
+
+

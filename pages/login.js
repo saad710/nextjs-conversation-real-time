@@ -67,7 +67,7 @@ function App() {
         </Grid>
         <form onSubmit={loginUser}>
           <TextField
-            variant="outlined"
+            variant="filled"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             type="email"
@@ -76,7 +76,7 @@ function App() {
           />
           <br />
           <TextField
-            variant="outlined"
+            variant="filled"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             type="password"

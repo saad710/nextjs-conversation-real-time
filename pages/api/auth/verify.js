@@ -5,6 +5,7 @@ import connectDB from "../../../middleware/mongoDB";
 
 const handler = async (req, res) => {
     if (req.method === 'GET') {
+      return new Promise((resolve, reject) => {
         console.log(req.headers)
         // console.log(VerifyToken(req))
         // const { VerifyToken } = req.headers;
@@ -33,12 +34,15 @@ const handler = async (req, res) => {
                 if (!user) return res.status(404).send("No user found.");
                 
                 res.status(200).send(user);
+                resolve();
               });
               
            
           } catch (err) {
             res.status(500).json(err)
+            return resolve();
           }
+        })
       
     } else {
       res.status(422).send('req_method_not_supported');

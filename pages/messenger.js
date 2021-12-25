@@ -128,7 +128,7 @@ const Messenger = () => {
                     </Grid>
                     {
                         currentChat && (
-                            <Grid item xs={4} style={{ padding: "2vh",height:'80vh',overflowY:"scroll" }}>
+                            <Grid item xs={5} style={{ padding: "2vh",height:'80vh',overflowY:"scroll" }}>
                                 {messages.map((message, index) => (
                                     <Message key={index} message={message} own={user._id === message.sender} />
                                 ))}

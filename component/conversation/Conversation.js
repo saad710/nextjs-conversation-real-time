@@ -29,7 +29,7 @@ const Conversation = (props) => {
             <List>
                 <ListItem button alignItems="flex-start">
                     <ListItemAvatar>
-                        <Avatar alt="Remy Sharp" />
+                        <Avatar  />
                     </ListItemAvatar>
                     <ListItemText
                         style={{ marginTop: '1.7vh' }}

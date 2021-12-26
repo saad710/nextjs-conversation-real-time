@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext, useRef } from 'react'
 import { useRouter } from 'next/router'
-import { Box, Button, Card, Grid, TextField } from '@mui/material'
+import { Avatar, Box, Button, Card, Divider, Grid, ListItem, ListItemAvatar, ListItemText, TextField, Typography } from '@mui/material'
 import jwt from 'jsonwebtoken'
 import { UserContext } from '../context/AuthContext/LoginProvider'
 import Topbar from '../component/topbar/Topbar'
@@ -12,15 +12,15 @@ import FeatherIcon from 'feather-icons-react'
 import { io } from 'socket.io-client'
 
 const trackHorizontal = {
-  'min-width': '100%',
-  'z-index': 150,
+  'minWidth': '100%',
+  'zIndex': 150,
   bottom: 0,
 }
 
 const thumbHorizontal = {
   cursor: 'pointer',
   background: 'red',
-  'min-width': '100px',
+  'minWidth': '100px',
 }
 
 const Messenger = () => {
@@ -79,7 +79,7 @@ const Messenger = () => {
 
   useEffect(() => {
     socket.current = io('ws://localhost:8900')
-   
+
     socket?.current.on('getMessage', (data) => {
       console.log(data)
       setArrivalMessage({
@@ -142,20 +142,7 @@ const Messenger = () => {
     getMessages()
   }, [currentChat])
 
-  //   useEffect(() => {
-  //     const getMessages = async () => {
-  //       try {
-  //         const res = await axios.get(
-  //           'http://localhost:8800/api/messages/' + currentChat?._id,
-  //         )
-  //         console.log(res.data)
-  //         setMessages(res?.data)
-  //       } catch (err) {
-  //         console.log(err)
-  //       }
-  //     }
-  //     getMessages()
-  //   }, [currentChat])
+
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -221,6 +208,7 @@ const Messenger = () => {
     )
     const findCurrentChatId = findCurrentChat?.toString()
     console.log(findCurrentChatId)
+
     axios
       .get(`http://localhost:3000/api/user/getSingleUser?userId=${findCurrentChatId}`)
       .then((response) => {
@@ -255,8 +243,8 @@ const Messenger = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('token')
-    router.replace('/login')
-    // history.replace('/login')
+    router.push('/login')
+   
   }
 
   if (!user) {
@@ -278,7 +266,7 @@ const Messenger = () => {
                 inputProps={{ 'aria-label': 'Search Contacts' }}
                 fullWidth
                 style={{ backgroundColor: 'white', borderRadius: '5px' }}
-                // onChange={(e) => dispatch(chatSearch(e.target.value))}
+              // onChange={(e) => dispatch(chatSearch(e.target.value))}
               />
             </Box>
             <CustomScrollBars
@@ -301,10 +289,39 @@ const Messenger = () => {
             </CustomScrollBars>
           </Grid>
           {currentChat && (
-            <Grid item xs={5} style={{ padding: '2vh' }}  >
+            <Grid item xs={5} style={{ padding: '2vh',height:"70vh" }}  >
+                <Box
+                display="flex"
+                alignItems="center"
+              >
+                <Box
+                  sx={{
+                    display: { xs: 'block', md: 'block', lg: 'none' },
+                    mr: '10px',
+                  }}
+                >
+                  <FeatherIcon icon="menu" width="18" />
+                </Box>
+                <ListItem dense disableGutters>
+                  <ListItemAvatar>
+                    <Avatar />
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={
+                      <Typography variant="h4">{findChatUser}</Typography>
+                    }
+                    secondary={
+                      <Typography variant="p">
+                        {chatUserOnline ? 'online' : 'offline'}
+                      </Typography>
+                    }
+                  />
+                </ListItem>
+              </Box>
+              <Divider />
               <CustomScrollBars
                 autoHide={false}
-                style={{ width: '100%'}}
+                style={{ width:"100%" }}
                 renderTrackHorizontal={(props) => {
                   console.log('renderTrackHorizontal', props)
                   return <div {...props} style={trackHorizontal} />
@@ -315,38 +332,38 @@ const Messenger = () => {
                 }}
               >
                 {messages.map((message, index) => (
-                  <Grid key={index}  ref={scrollRef}  >
-                     <Message
-                    // key={index}
-                    message={message}
-                    own={user._id === message.sender}
-                  />
+                  <Grid key={index} ref={scrollRef} style={{padding:"0.4vh"}}  >
+                    <Message
+                      // key={index}
+                      message={message}
+                      own={user._id === message.sender}
+                    />
                   </Grid>
                 ))}
               </CustomScrollBars>
               <form onSubmit={handleSubmit} >
-                    <Grid container>
-                        <Grid item xs={11}>
-                          <TextField
-                            id="msg-sent"
-                            fullWidth
-                            value={newMessage}
-                            placeholder="Type a Message"
-                            size="small"
-                            type="text"
-                            variant="outlined"
-                            style={{ backgroundColor: 'white' }}
-                            inputProps={{ 'aria-label': 'Type a Message' }}
-                            onChange={(e) => setNewMessage(e.target.value)}
-                          />
-                        </Grid>
-                        <Grid item xs={1}>
-                          <Button fullWidth type="submit">
-                            <FeatherIcon icon="send" width="24" />
-                          </Button>
-                        </Grid>
-                    </Grid>
-                </form>
+                <Grid container >
+                  <Grid item xs={11}>
+                    <TextField
+                      id="msg-sent"
+                      fullWidth
+                      value={newMessage}
+                      placeholder="Type a Message"
+                      size="small"
+                      type="text"
+                      variant="outlined"
+                      style={{ backgroundColor: 'white' }}
+                      inputProps={{ 'aria-label': 'Type a Message' }}
+                      onChange={(e) => setNewMessage(e.target.value)}
+                    />
+                  </Grid>
+                  <Grid item xs={1}>
+                    <Button fullWidth type="submit">
+                      <FeatherIcon icon="send" width="24" />
+                    </Button>
+                  </Grid>
+                </Grid>
+              </form>
             </Grid>
           )}
         </Grid>

@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from 'react'
 import { useRouter } from 'next/router'
-import { Button, Grid } from '@mui/material'
+import { Box, Button, Card, Grid, TextField } from '@mui/material'
 import jwt from 'jsonwebtoken'
 import { UserContext } from '../context/AuthContext/LoginProvider'
 import Topbar from '../component/topbar/Topbar'
@@ -123,13 +123,40 @@ const Messenger = () => {
     return (
       <div>
         <Topbar handleLogout={handleLogout} user={user} />
+
         <Grid container>
           <Grid item xs={2} style={{ padding: '2vh' }}>
-            {conversation.map((conv, index) => (
-              <div key={index}>
-                <Conversation conversation={conv} currentUser={user} />
-              </div>
-            ))}
+            <Box>
+              <TextField
+                id="outlined-search"
+                placeholder="Search contacts"
+                size="small"
+                type="search"
+                variant="outlined"
+                inputProps={{ 'aria-label': 'Search Contacts' }}
+                fullWidth
+                style={{ backgroundColor: 'white', borderRadius: '5px' }}
+                // onChange={(e) => dispatch(chatSearch(e.target.value))}
+              />
+            </Box>
+            <CustomScrollBars
+              autoHide={false}
+              style={{ width: '100%', height: '80vh' }}
+              renderTrackHorizontal={(props) => {
+                console.log('renderTrackHorizontal', props)
+                return <div {...props} style={trackHorizontal} />
+              }}
+              renderThumbHorizontal={(props) => {
+                console.log('renderThumbHorizontal', props)
+                return <div {...props} style={thumbHorizontal} />
+              }}
+            >
+              {conversation.map((conv, index) => (
+                <div key={index}>
+                  <Conversation conversation={conv} currentUser={user} />
+                </div>
+              ))}
+            </CustomScrollBars>
           </Grid>
           {currentChat && (
             <Grid item xs={5} style={{ padding: '2vh' }}>

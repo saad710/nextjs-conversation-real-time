@@ -5,7 +5,7 @@ import { format } from 'timeago.js'
 const Message = (props) => {
   const { message, own } = props
   return (
-    <div>
+    <div >
       <Box>
         <div>
           <Box p={2}>

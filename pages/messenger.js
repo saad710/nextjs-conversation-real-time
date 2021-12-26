@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect, useContext, useRef } from 'react'
 import { useRouter } from 'next/router'
 import { Box, Button, Card, Grid, TextField } from '@mui/material'
 import jwt from 'jsonwebtoken'
@@ -8,6 +8,8 @@ import axios from 'axios'
 import Conversation from '../component/conversation/Conversation'
 import Message from '../component/message/Message'
 import CustomScrollBars from 'react-custom-scrollbars'
+import FeatherIcon from 'feather-icons-react'
+import { io } from 'socket.io-client'
 
 const trackHorizontal = {
   'min-width': '100%',
@@ -22,12 +24,21 @@ const thumbHorizontal = {
 }
 
 const Messenger = () => {
+  const scrollRef = useRef()
+  const socket = useRef()
   const router = useRouter()
   const { user, dispatch } = useContext(UserContext)
   const [conversation, setConversation] = useState([])
   console.log(conversation)
   const [currentChat, setCurrentChat] = useState()
   const [messages, setMessages] = useState([])
+  const [newMessage, setNewMessage] = useState('')
+  const [onlineMatch, setOnlineMatch] = useState([])
+  const [findChatUser, setFindChatUser] = useState()
+  const [chatUserOnline, setChatUserOnline] = useState()
+  const [arrivalMessage, setArrivalMessage] = useState(null)
+  const [onlineUsers, setOnlineUsers] = useState([])
+  console.log(onlineUsers)
   console.log(user)
 
   // const [userData, setUserData] = useState(null)
@@ -64,6 +75,41 @@ const Messenger = () => {
       router.push('/login')
     }
   }, [])
+
+
+  useEffect(() => {
+    socket.current = io('ws://localhost:8900')
+   
+    socket?.current.on('getMessage', (data) => {
+      console.log(data)
+      setArrivalMessage({
+        sender: data.senderId,
+        text: data.text,
+        createdAt: Date.now(),
+      })
+    })
+  }, [user])
+  console.log(arrivalMessage)
+
+  console.log(socket)
+
+  useEffect(() => {
+    arrivalMessage &&
+      currentChat?.members.includes(arrivalMessage.sender) &&
+      setMessages((prev) => [...prev, arrivalMessage])
+  }, [arrivalMessage, currentChat])
+  console.log(currentChat)
+
+  useEffect(() => {
+    socket?.current.emit('addUser', user?._id)
+    socket?.current.on('getUsers', (users) => {
+      console.log(users)
+      setOnlineUsers(
+        user?.followings?.filter((f) => users?.some((u) => u.userId === f)),
+      )
+    })
+  }, [user])
+  console.log(onlineUsers)
 
   useEffect(() => {
     const getConversations = async () => {
@@ -111,6 +157,102 @@ const Messenger = () => {
   //     getMessages()
   //   }, [currentChat])
 
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    const message = {
+      sender: user._id,
+      text: newMessage,
+      conversationId: currentChat._id,
+    }
+
+    const receiverId = currentChat?.members.find(
+      (member) => member !== user?._id,
+    )
+
+    socket.current.emit('sendMessage', {
+      senderId: user?._id,
+      receiverId,
+      text: newMessage,
+    })
+
+    try {
+      const res = await axios.post(
+        'http://localhost:3000/api/message/postMessage',
+        message,
+      )
+      console.log(res.data)
+      setMessages([...messages, res.data])
+      setNewMessage('')
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [messages])
+
+
+  useEffect(() => {
+    const chatOnlineMatch = onlineMatch?.filter((f) =>
+      onlineUsers?.includes(f._id),
+    )
+    console.log(chatOnlineMatch)
+    const matchData = chatOnlineMatch?.filter(
+      (user) => user.username === findChatUser,
+    )
+    console.log(matchData)
+    console.log(matchData.length === 0)
+    if (matchData.length === 0) {
+      setChatUserOnline(false)
+    } else {
+      setChatUserOnline(true)
+    }
+  }, [findChatUser, onlineUsers, onlineMatch])
+
+  const handleUserChat = (conv, index) => {
+    console.log(conv)
+    setCurrentChat(conv)
+  }
+
+  useEffect(() => {
+    const findCurrentChat = currentChat?.members?.filter(
+      (userInfo) => userInfo !== user?._id,
+    )
+    const findCurrentChatId = findCurrentChat?.toString()
+    console.log(findCurrentChatId)
+    axios
+      .get(`http://localhost:3000/api/user/getSingleUser?userId=${findCurrentChatId}`)
+      .then((response) => {
+        const data = response.data
+        console.log(data)
+        setFindChatUser(data.username)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+    axios
+      .get(`http://localhost:3000/api/user/getFriend?userId=${user?._id}`)
+      .then((response) => {
+        const data = response.data
+        console.log(data)
+        setOnlineMatch(data)
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }, [currentChat, user])
+
+  useEffect(() => {
+    let mData = []
+    conversation.map((all) => {
+      mData.push(all.members.find((data) => data !== user._id))
+    })
+    console.log(mData)
+    const filterSameData = [...new Set(mData.map((unique) => unique))]
+    console.log(filterSameData)
+  })
+
   const handleLogout = () => {
     localStorage.removeItem('token')
     router.replace('/login')
@@ -152,17 +294,17 @@ const Messenger = () => {
               }}
             >
               {conversation.map((conv, index) => (
-                <div key={index}>
+                <div key={index} onClick={() => handleUserChat(conv, index)}>
                   <Conversation conversation={conv} currentUser={user} />
                 </div>
               ))}
             </CustomScrollBars>
           </Grid>
           {currentChat && (
-            <Grid item xs={5} style={{ padding: '2vh' }}>
+            <Grid item xs={5} style={{ padding: '2vh' }}  >
               <CustomScrollBars
                 autoHide={false}
-                style={{ width: '100%', height: '80vh' }}
+                style={{ width: '100%'}}
                 renderTrackHorizontal={(props) => {
                   console.log('renderTrackHorizontal', props)
                   return <div {...props} style={trackHorizontal} />
@@ -173,13 +315,38 @@ const Messenger = () => {
                 }}
               >
                 {messages.map((message, index) => (
-                  <Message
-                    key={index}
+                  <Grid key={index}  ref={scrollRef}  >
+                     <Message
+                    // key={index}
                     message={message}
                     own={user._id === message.sender}
                   />
+                  </Grid>
                 ))}
               </CustomScrollBars>
+              <form onSubmit={handleSubmit} >
+                    <Grid container>
+                        <Grid item xs={11}>
+                          <TextField
+                            id="msg-sent"
+                            fullWidth
+                            value={newMessage}
+                            placeholder="Type a Message"
+                            size="small"
+                            type="text"
+                            variant="outlined"
+                            style={{ backgroundColor: 'white' }}
+                            inputProps={{ 'aria-label': 'Type a Message' }}
+                            onChange={(e) => setNewMessage(e.target.value)}
+                          />
+                        </Grid>
+                        <Grid item xs={1}>
+                          <Button fullWidth type="submit">
+                            <FeatherIcon icon="send" width="24" />
+                          </Button>
+                        </Grid>
+                    </Grid>
+                </form>
             </Grid>
           )}
         </Grid>

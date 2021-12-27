@@ -38,6 +38,7 @@ const Messenger = () => {
   const [chatUserOnline, setChatUserOnline] = useState()
   const [arrivalMessage, setArrivalMessage] = useState(null)
   const [onlineUsers, setOnlineUsers] = useState([])
+  const [redId,setRedId] = useState('')
   console.log(onlineUsers)
   console.log(user)
 
@@ -81,7 +82,8 @@ const Messenger = () => {
     socket.current = io('ws://localhost:8900')
 
     socket?.current.on('getMessage', (data) => {
-      console.log(data)
+      console.log(data.senderId)
+      setRedId(data.senderId)
       setArrivalMessage({
         sender: data.senderId,
         text: data.text,
@@ -198,6 +200,7 @@ const Messenger = () => {
   }, [findChatUser, onlineUsers, onlineMatch])
 
   const handleUserChat = (conv, index) => {
+    setRedId('')
     console.log(conv)
     setCurrentChat(conv)
   }
@@ -271,7 +274,7 @@ const Messenger = () => {
             </Box>
             <CustomScrollBars
               autoHide={false}
-              style={{ width: '100%', height: '70vh' }}
+              style={{ width: '100%', height: '80vh' }}
               renderTrackHorizontal={(props) => {
                 console.log('renderTrackHorizontal', props)
                 return <div {...props} style={trackHorizontal} />
@@ -283,7 +286,7 @@ const Messenger = () => {
             >
               {conversation.map((conv, index) => (
                 <div key={index} onClick={() => handleUserChat(conv, index)}>
-                  <Conversation conversation={conv} currentUser={user} />
+                  <Conversation conversation={conv} currentUser={user} redId={redId} />
                 </div>
               ))}
             </CustomScrollBars>

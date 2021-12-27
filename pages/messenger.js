@@ -271,7 +271,7 @@ const Messenger = () => {
             </Box>
             <CustomScrollBars
               autoHide={false}
-              style={{ width: '100%', height: '80vh' }}
+              style={{ width: '100%', height: '70vh' }}
               renderTrackHorizontal={(props) => {
                 console.log('renderTrackHorizontal', props)
                 return <div {...props} style={trackHorizontal} />
@@ -322,14 +322,10 @@ const Messenger = () => {
               <CustomScrollBars
                 autoHide={false}
                 style={{ width:"100%" }}
-                renderTrackHorizontal={(props) => {
-                  console.log('renderTrackHorizontal', props)
-                  return <div {...props} style={trackHorizontal} />
-                }}
-                renderThumbHorizontal={(props) => {
-                  console.log('renderThumbHorizontal', props)
-                  return <div {...props} style={thumbHorizontal} />
-                }}
+                renderView={props => (
+                  <div {...props} style={{ ...props.style, overflowX: 'hidden' }} />
+              )}
+
               >
                 {messages.map((message, index) => (
                   <Grid key={index} ref={scrollRef} style={{padding:"0.4vh"}}  >

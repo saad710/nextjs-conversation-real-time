@@ -2,6 +2,7 @@ import { Avatar, List, ListItem, ListItemAvatar, ListItemText } from '@mui/mater
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import MarkUnreadChatAltTwoToneIcon from '@mui/icons-material/MarkUnreadChatAltTwoTone';
+import { blue } from '@mui/material/colors';
 
 const Conversation = (props) => {
     const { conversation, currentUser,redId } = props;
@@ -31,7 +32,7 @@ const Conversation = (props) => {
             <List>
                 <ListItem button alignItems="flex-start">
                     <ListItemAvatar>
-                        <Avatar  />
+                        <Avatar sx={{ bgcolor: blue[100], color: blue[600] }} />
                     </ListItemAvatar>
                     <ListItemText
                         style={{ marginTop: '1.7vh' }}

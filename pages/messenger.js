@@ -10,6 +10,7 @@ import Message from '../component/message/Message'
 import CustomScrollBars from 'react-custom-scrollbars'
 import FeatherIcon from 'feather-icons-react'
 import { io } from 'socket.io-client'
+import { blue } from '@mui/material/colors';
 
 const trackHorizontal = {
   'minWidth': '100%',
@@ -129,6 +130,8 @@ const Messenger = () => {
     getConversations()
   }, [user, setCurrentChat])
 
+  
+
   useEffect(() => {
     const getMessages = async () => {
       try {
@@ -199,6 +202,7 @@ const Messenger = () => {
     }
   }, [findChatUser, onlineUsers, onlineMatch])
 
+
   const handleUserChat = (conv, index) => {
     setRedId('')
     console.log(conv)
@@ -255,7 +259,7 @@ const Messenger = () => {
   } else {
     return (
       <div>
-        <Topbar handleLogout={handleLogout} user={user} />
+        <Topbar handleLogout={handleLogout} user={user} conversation={conversation}  setConversation={setConversation}/>
 
         <Grid container>
           <Grid item xs={2} style={{ padding: '2vh' }}>
@@ -307,7 +311,7 @@ const Messenger = () => {
                 </Box>
                 <ListItem dense disableGutters>
                   <ListItemAvatar>
-                    <Avatar />
+                    <Avatar  sx={{ bgcolor: blue[100], color: blue[600] }} />
                   </ListItemAvatar>
                   <ListItemText
                     primary={

@@ -1,6 +1,7 @@
 import { Avatar, ListItemAvatar, Box } from '@mui/material'
 import React from 'react'
 import { format } from 'timeago.js'
+import { blue } from '@mui/material/colors';
 
 const Message = (props) => {
   const { message, own } = props
@@ -13,8 +14,7 @@ const Message = (props) => {
               <Box display="flex" alignItems="start   " flexDirection="row">
                 <ListItemAvatar>
                   <Avatar
-                  // alt={chatDetails.name}
-                  //   src={profile}
+                  sx={{ bgcolor: blue[100], color: blue[600] }}
                   />
                 </ListItemAvatar>
                 <div className="pl-3">

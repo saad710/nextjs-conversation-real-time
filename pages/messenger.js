@@ -259,7 +259,7 @@ const Messenger = () => {
   } else {
     return (
       <div>
-        <Topbar handleLogout={handleLogout} user={user} conversation={conversation}  setConversation={setConversation}/>
+        <Topbar handleLogout={handleLogout} user={user} dispatch={dispatch} conversation={conversation}  setConversation={setConversation}/>
 
         <Grid container>
           <Grid item xs={2} style={{ padding: '2vh' }}>

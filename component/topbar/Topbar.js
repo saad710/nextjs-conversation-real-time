@@ -23,9 +23,11 @@ import axios from 'axios';
 
 
 function SimpleDialog(props) {
-  const { onClose, open, addUser,setAddUser,user,dispatch } = props;
+  const { onClose, open, addUser,setAddUser,user,dispatch,conversation } = props;
+  console.log(conversation)
 
   const handleListItemClick = (all) => {
+    console.log(all._id)
     const filteredItem = addUser.filter((ind) => {
       return ind._id !== all._id
     })
@@ -53,7 +55,7 @@ function SimpleDialog(props) {
             })
           const userInfo = { userId: user._id }
           axios
-            .put(`http://localhost:3000/api/user/followUser`, userInfo)
+            .put(`http://localhost:3000/api/user/followUser?id=${all._id}`, userInfo)
             .then((response) => {
               console.log(response.data)
               // const followData = {"username" : all.username,"_id":all._id}
@@ -85,7 +87,7 @@ function SimpleDialog(props) {
               </Avatar>
             </ListItemAvatar>
             <ListItemText primary={all.username} sx={{ m: 2 }} style={{ width: '10vh' }} />
-            <ListItemButton sx={{ bgcolor: blue[100], color: blue[600] }}  onClick={() => handleListItemClick(all)}>Add</ListItemButton>
+            <ListItemButton sx={{ bgcolor: blue[100], color: blue[600] }} style={{borderRadius:'5px'}}  onClick={() => handleListItemClick(all)}>Add</ListItemButton>
           </ListItem>
         ))}
       </List>
@@ -278,6 +280,7 @@ const Topbar = (props) => {
           setAddUser={setAddUser}
           user={user}
           dispatch={dispatch}
+          conversation={conversation}
         />
       </Container>
     </AppBar>

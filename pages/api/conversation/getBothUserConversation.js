@@ -5,7 +5,7 @@ import connectDB from "../../../middleware/mongodb"
 const handler = async (req, res) => {
     if (req.method === 'GET') {
         const { firstUserId, secondUserId } = req.query;
-        if (firstUserId && secondUserId) {
+     
             console.log(req.query)
             try {
                 const conversation = await Conversation.findOne({
@@ -14,9 +14,8 @@ const handler = async (req, res) => {
                 res.status(200).json(conversation)
             } catch (err) {
                 res.status(500).json(err)
-                res.end()
             }
-        }
+        
     }
 
     else {

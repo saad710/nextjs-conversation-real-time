@@ -1,5 +1,6 @@
 import Conversation from "../../../models/conversation"
 import connectDB from "../../../middleware/mongodb"
+import { resolveHref } from "next/dist/shared/lib/router/router";
 
 
 const handler = async (req, res) => {
@@ -14,8 +15,10 @@ const handler = async (req, res) => {
                 })
                 console.log(conversation)
                 res.status(200).json(conversation);
+                return resolve()
             } catch (err) {
                 res.status(500).json(err)
+                return resolve()
             }
            }
 

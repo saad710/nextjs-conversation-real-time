@@ -22,7 +22,7 @@ const Message = (props) => {
                     mb={1}
                     sx={{
                       p: 2,
-                      backgroundColor: '#ADD8E6',
+                      backgroundColor: '#73c2fb',
                       borderRadius: '6px',
                       color: 'black',
                     }}
@@ -46,7 +46,7 @@ const Message = (props) => {
                   <Box
                     sx={{
                       p: 2,
-                      backgroundColor: '#ADD8E6',
+                      backgroundColor: '#fefefa',
                       ml: 'auto',
                       borderRadius: '6px',
                       color: 'black',

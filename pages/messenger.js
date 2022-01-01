@@ -260,10 +260,10 @@ const Messenger = () => {
     return (
       <div>
         <Topbar handleLogout={handleLogout} user={user} dispatch={dispatch} conversation={conversation} setConversation={setConversation} />
-        <Card sx={{ display: "flex", p: 0, m: 5 }} variant="outlined">
-          <Grid container>
+        <Card sx={{ display: "flex", p: 0, m: 5 }} style={{width:'100vh',backgroundColor:'#F0F8FF'}} variant="outlined">
+          <Grid container >
 
-            <Grid item xs={2} style={{ padding: '2vh' }}>
+            <Grid item xs={4} style={{ padding: '2vh' }}>
               <Box>
                 <TextField
                   id="outlined-search"
@@ -298,7 +298,7 @@ const Messenger = () => {
             </Grid>
             
             {currentChat && (
-              <Grid item xs={5} style={{ padding: '2vh', height: "70vh" }}  >
+              <Grid item xs={8} style={{ padding: '2vh', height: "70vh" }}  >
                 <Box
                   display="flex"
                   alignItems="center"

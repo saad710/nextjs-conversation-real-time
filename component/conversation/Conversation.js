@@ -5,7 +5,7 @@ import MarkUnreadChatAltTwoToneIcon from '@mui/icons-material/MarkUnreadChatAltT
 import { blue } from '@mui/material/colors';
 
 const Conversation = (props) => {
-    const { conversation, currentUser,redId } = props;
+    const { conversation, currentUser, redId } = props;
     console.log(redId)
     const [user, setUser] = useState('')
     console.log(user?.username)
@@ -37,16 +37,16 @@ const Conversation = (props) => {
                     <ListItemText
                         style={{ marginTop: '1.7vh' }}
                         primary={user?.username}
-                       
+
                     />
                     <ListItemAvatar>
                         {
                             user._id === redId ?
-                            <MarkUnreadChatAltTwoToneIcon style={{color:"royalblue",marginTop:'1vh',borderRadius:'10px'}}/>
-                            :null
+                                <MarkUnreadChatAltTwoToneIcon style={{ color: "royalblue", marginTop: '1vh', borderRadius: '10px' }} />
+                                : null
                         }
                     </ListItemAvatar>
-                   
+
                 </ListItem>
             </List>
         </div>

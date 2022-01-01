@@ -23,7 +23,7 @@ import axios from 'axios';
 
 
 function SimpleDialog(props) {
-  const { onClose, open, addUser,setAddUser,user,dispatch,conversation } = props;
+  const { onClose, open, addUser, setAddUser, user, dispatch, conversation } = props;
   console.log(conversation)
 
   const handleListItemClick = (all) => {
@@ -87,7 +87,7 @@ function SimpleDialog(props) {
               </Avatar>
             </ListItemAvatar>
             <ListItemText primary={all.username} sx={{ m: 2 }} style={{ width: '10vh' }} />
-            <ListItemButton sx={{ bgcolor: blue[100], color: blue[600] }} style={{borderRadius:'5px'}}  onClick={() => handleListItemClick(all)}>Add</ListItemButton>
+            <ListItemButton sx={{ bgcolor: blue[100], color: blue[600] }} style={{ borderRadius: '5px' }} onClick={() => handleListItemClick(all)}>Add</ListItemButton>
           </ListItem>
         ))}
       </List>
@@ -103,7 +103,7 @@ function SimpleDialog(props) {
 // };
 
 const Topbar = (props) => {
-  const { user, handleLogout, conversation, setConversation,dispatch } = props;
+  const { user, handleLogout, conversation, setConversation, dispatch } = props;
   const [sideUser, setSideUser] = useState([])
   const [addUser, setAddUser] = useState([])
   const [anchorElNav, setAnchorElNav] = React.useState(null);

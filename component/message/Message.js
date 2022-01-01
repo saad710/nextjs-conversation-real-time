@@ -14,7 +14,7 @@ const Message = (props) => {
               <Box display="flex" alignItems="start   " flexDirection="row">
                 <ListItemAvatar>
                   <Avatar
-                  sx={{ bgcolor: blue[100], color: blue[600] }}
+                    sx={{ bgcolor: blue[100], color: blue[600] }}
                   />
                 </ListItemAvatar>
                 <div className="pl-3">

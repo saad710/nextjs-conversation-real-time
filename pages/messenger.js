@@ -39,7 +39,7 @@ const Messenger = () => {
   const [chatUserOnline, setChatUserOnline] = useState()
   const [arrivalMessage, setArrivalMessage] = useState(null)
   const [onlineUsers, setOnlineUsers] = useState([])
-  const [redId,setRedId] = useState('')
+  const [redId, setRedId] = useState('')
   console.log(onlineUsers)
   console.log(user)
 
@@ -130,7 +130,7 @@ const Messenger = () => {
     getConversations()
   }, [user, setCurrentChat])
 
-  
+
 
   useEffect(() => {
     const getMessages = async () => {
@@ -251,7 +251,7 @@ const Messenger = () => {
   const handleLogout = () => {
     localStorage.removeItem('token')
     router.push('/login')
-   
+
   }
 
   if (!user) {
@@ -259,117 +259,121 @@ const Messenger = () => {
   } else {
     return (
       <div>
-        <Topbar handleLogout={handleLogout} user={user} dispatch={dispatch} conversation={conversation}  setConversation={setConversation}/>
+        <Topbar handleLogout={handleLogout} user={user} dispatch={dispatch} conversation={conversation} setConversation={setConversation} />
+        <Card sx={{ display: "flex", p: 0, m: 5 }} variant="outlined">
+          <Grid container>
 
-        <Grid container>
-          <Grid item xs={2} style={{ padding: '2vh' }}>
-            <Box>
-              <TextField
-                id="outlined-search"
-                placeholder="Search contacts"
-                size="small"
-                type="search"
-                variant="outlined"
-                inputProps={{ 'aria-label': 'Search Contacts' }}
-                fullWidth
-                style={{ backgroundColor: 'white', borderRadius: '5px' }}
-              // onChange={(e) => dispatch(chatSearch(e.target.value))}
-              />
-            </Box>
-            <CustomScrollBars
-              autoHide={false}
-              style={{ width: '100%', height: '80vh' }}
-              renderTrackHorizontal={(props) => {
-                console.log('renderTrackHorizontal', props)
-                return <div {...props} style={trackHorizontal} />
-              }}
-              renderThumbHorizontal={(props) => {
-                console.log('renderThumbHorizontal', props)
-                return <div {...props} style={thumbHorizontal} />
-              }}
-            >
-              {conversation.map((conv, index) => (
-                <div key={index} onClick={() => handleUserChat(conv, index)}>
-                  <Conversation conversation={conv} currentUser={user} redId={redId} />
-                </div>
-              ))}
-            </CustomScrollBars>
-          </Grid>
-          {currentChat && (
-            <Grid item xs={5} style={{ padding: '2vh',height:"70vh" }}  >
-                <Box
-                display="flex"
-                alignItems="center"
-              >
-                <Box
-                  sx={{
-                    display: { xs: 'block', md: 'block', lg: 'none' },
-                    mr: '10px',
-                  }}
-                >
-                  <FeatherIcon icon="menu" width="18" />
-                </Box>
-                <ListItem dense disableGutters>
-                  <ListItemAvatar>
-                    <Avatar  sx={{ bgcolor: blue[100], color: blue[600] }} />
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={
-                      <Typography variant="h4">{findChatUser}</Typography>
-                    }
-                    secondary={
-                      <Typography variant="p">
-                        {chatUserOnline ? 'online' : 'offline'}
-                      </Typography>
-                    }
-                  />
-                </ListItem>
+            <Grid item xs={2} style={{ padding: '2vh' }}>
+              <Box>
+                <TextField
+                  id="outlined-search"
+                  placeholder="Search contacts"
+                  size="small"
+                  type="search"
+                  variant="outlined"
+                  inputProps={{ 'aria-label': 'Search Contacts' }}
+                  fullWidth
+                  style={{ backgroundColor: 'white', borderRadius: '5px' }}
+                // onChange={(e) => dispatch(chatSearch(e.target.value))}
+                />
               </Box>
-              <Divider />
               <CustomScrollBars
                 autoHide={false}
-                style={{ width:"100%" }}
-                renderView={props => (
-                  <div {...props} style={{ ...props.style, overflowX: 'hidden' }} />
-              )}
-
+                style={{ width: '100%', height: '75vh' }}
+                renderTrackHorizontal={(props) => {
+                  console.log('renderTrackHorizontal', props)
+                  return <div {...props} style={trackHorizontal} />
+                }}
+                renderThumbHorizontal={(props) => {
+                  console.log('renderThumbHorizontal', props)
+                  return <div {...props} style={thumbHorizontal} />
+                }}
               >
-                {messages.map((message, index) => (
-                  <Grid key={index} ref={scrollRef} style={{padding:"0.4vh"}}  >
-                    <Message
-                      // key={index}
-                      message={message}
-                      own={user._id === message.sender}
-                    />
-                  </Grid>
+                {conversation.map((conv, index) => (
+                  <div key={index} onClick={() => handleUserChat(conv, index)}>
+                    <Conversation conversation={conv} currentUser={user} redId={redId} />
+                  </div>
                 ))}
               </CustomScrollBars>
-              <form onSubmit={handleSubmit} >
-                <Grid container >
-                  <Grid item xs={11}>
-                    <TextField
-                      id="msg-sent"
-                      fullWidth
-                      value={newMessage}
-                      placeholder="Type a Message"
-                      size="small"
-                      type="text"
-                      variant="outlined"
-                      style={{ backgroundColor: 'white' }}
-                      inputProps={{ 'aria-label': 'Type a Message' }}
-                      onChange={(e) => setNewMessage(e.target.value)}
-                    />
-                  </Grid>
-                  <Grid item xs={1}>
-                    <Button fullWidth type="submit">
-                      <FeatherIcon icon="send" width="24" />
-                    </Button>
-                  </Grid>
-                </Grid>
-              </form>
             </Grid>
-          )}
-        </Grid>
+            
+            {currentChat && (
+              <Grid item xs={5} style={{ padding: '2vh', height: "70vh" }}  >
+                <Box
+                  display="flex"
+                  alignItems="center"
+                >
+                  <Box
+                    sx={{
+                      display: { xs: 'block', md: 'block', lg: 'none' },
+                      mr: '10px',
+                    }}
+                  >
+                    <FeatherIcon icon="menu" width="18" />
+                  </Box>
+                  <ListItem dense disableGutters>
+                    <ListItemAvatar>
+                      <Avatar sx={{ bgcolor: blue[100], color: blue[600] }} />
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={
+                        <Typography variant="h4">{findChatUser}</Typography>
+                      }
+                      secondary={
+                        <Typography variant="p">
+                          {chatUserOnline ? 'online' : 'offline'}
+                        </Typography>
+                      }
+                    />
+                  </ListItem>
+                </Box>
+                <Divider />
+                <CustomScrollBars
+                  autoHide={false}
+                  style={{ width: "100%" }}
+                  renderView={props => (
+                    <div {...props} style={{ ...props.style, overflowX: 'hidden' }} />
+                  )}
+
+                >
+                  {messages.map((message, index) => (
+                    <Grid key={index} ref={scrollRef} style={{ padding: "0.4vh" }}  >
+                      <Message
+                        // key={index}
+                        message={message}
+                        own={user._id === message.sender}
+                      />
+                    </Grid>
+                  ))}
+                </CustomScrollBars>
+                <form onSubmit={handleSubmit} >
+                  <Grid container >
+                    <Grid item xs={11}>
+                      <TextField
+                        id="msg-sent"
+                        fullWidth
+                        value={newMessage}
+                        placeholder="Type a Message"
+                        size="small"
+                        type="text"
+                        variant="outlined"
+                        style={{ backgroundColor: 'white' }}
+                        inputProps={{ 'aria-label': 'Type a Message' }}
+                        onChange={(e) => setNewMessage(e.target.value)}
+                      />
+                    </Grid>
+                    <Grid item xs={1}>
+                      <Button fullWidth type="submit">
+                        <FeatherIcon icon="send" width="24" />
+                      </Button>
+                    </Grid>
+                  </Grid>
+                </form>
+              </Grid>
+            )}
+
+          </Grid>
+        </Card>
       </div>
     )
   }

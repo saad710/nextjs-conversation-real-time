@@ -8,7 +8,9 @@ const INIT_STATE = {
         "name" : "ifrat",
         "id" : "6"
     },
+    
 ],
+pro: null,
   };
 
 const TestReducer = (state =INIT_STATE ,action) => {
@@ -17,7 +19,13 @@ const TestReducer = (state =INIT_STATE ,action) => {
             return {
                 ...state,
                 test: action.result ,
-            }      
+            } ;
+            case 'pro-data':
+            return {
+                ...state,
+                pro:action.result ,
+            } ;
+
             default: 
             return state;
     }

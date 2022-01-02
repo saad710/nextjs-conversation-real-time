@@ -11,6 +11,8 @@ const Test = () => {
      const dispatch = useDispatch();
     const active = useSelector((state) => state.TestReducer.test);
     console.log(active)
+    const proActive = useSelector((state) => state.TestReducer.pro)
+    console.log(proActive)
   
   
 
@@ -26,6 +28,8 @@ const Test = () => {
                 dispatch({ type: 'test-data', result: active.map(a => {
                     return {...a , active:'yes'}
                   }) })
+                  dispatch({ type: 'pro-data', result: 10
+                  }) 
                 
             }
         }

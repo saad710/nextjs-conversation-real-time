@@ -28,7 +28,8 @@ const Messenger = () => {
   const scrollRef = useRef()
   const socket = useRef()
   const router = useRouter()
-  const { user, dispatch } = useContext(UserContext)
+  const { user, dispatch,pro } = useContext(UserContext)
+  console.log(pro)
   const [conversation, setConversation] = useState([])
   console.log(conversation)
   const [currentChat, setCurrentChat] = useState()
@@ -57,6 +58,9 @@ const Messenger = () => {
     if (data) {
       // setUserData(data)
       dispatch({ type: 'Login_Success', result: data })
+      dispatch({type:'pro-data',result : pro.map(p => {
+        return {...p, active: "yes"}
+      })})
     } else {
       alert(data.error)
     }
@@ -81,7 +85,6 @@ const Messenger = () => {
 
   useEffect(() => {
     socket.current = io('ws://localhost:8900')
-
     socket?.current.on('getMessage', (data) => {
       console.log(data.senderId)
       setRedId(data.senderId)

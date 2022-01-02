@@ -14,6 +14,7 @@ pro: null,
   };
 
 const TestReducer = (state =INIT_STATE ,action) => {
+    console.log({type:action.type})
     switch(action.type){
         case 'test-data':
             return {

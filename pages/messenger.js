@@ -2,7 +2,6 @@ import { useState, useEffect, useContext, useRef } from 'react'
 import { useRouter } from 'next/router'
 import { Avatar, Box, Button, Card, Divider, Grid, ListItem, ListItemAvatar, ListItemText, TextField, Typography } from '@mui/material'
 import jwt from 'jsonwebtoken'
-import { UserContext } from '../context/AuthContext/LoginProvider'
 import Topbar from '../component/topbar/Topbar'
 import axios from 'axios'
 import Conversation from '../component/conversation/Conversation'
@@ -12,6 +11,7 @@ import FeatherIcon from 'feather-icons-react'
 import { io } from 'socket.io-client'
 import { blue } from '@mui/material/colors';
 import { useDispatch, useSelector } from 'react-redux';
+
 
 const trackHorizontal = {
   'minWidth': '100%',
@@ -27,9 +27,13 @@ const thumbHorizontal = {
 
 const Messenger = () => {
   const scrollRef = useRef()
+  const dispatch = useDispatch();
+  
   const socket = useRef()
   const router = useRouter()
-  const { user,dispatch } = useContext(UserContext)
+  const user = useSelector((state) => state.AuthReducer.user);
+  console.log(user)
+  // const { user,dispatch } = useContext(UserContext)
   const [conversation, setConversation] = useState([])
   console.log(conversation)
   const [currentChat, setCurrentChat] = useState()
@@ -42,32 +46,76 @@ const Messenger = () => {
   const [onlineUsers, setOnlineUsers] = useState([])
   const [redId, setRedId] = useState('')
   console.log(onlineUsers)
-  console.log(user)
-  // const dispatch = useDispatch();
-  // const active = useSelector((state) => state.TestReducer.test);
-  // console.log(active)
+  // console.log(user)
+ 
+  // console.log(user)
 
   // const [userData, setUserData] = useState(null)
   // console.log(userData)
   async function populateQuote() {
-    const req = await fetch('http://localhost:3000/api/auth/verify', {
-      headers: {
-        'x-access-token': localStorage.getItem('token'),
-      },
-    })
 
-    const data = await req.json()
-    console.log(data)
-    if (data) {
-      // setUserData(data)
-      dispatch({ type: 'Login_Success', result: data })
+
+
+    return (dispatch) => {     //nameless functions
+
+      console.log({dispatch})
+      debugger
+         return fetch('http://localhost:3000/api/auth/verify', {
+            headers: {
+              'x-access-token': localStorage.getItem('token'),
+            },
+          }).then(res=>res.json()).then(res=>{
+            // console.log(dispatch)
+            dispatch({ type: 'Login', result: res })
+            console.log(res)
+          
+          })
       
-    } else {
-      alert(data.error)
-    }
+         
+         
+          
+    };
+    
+    // const req = await fetch('http://localhost:3000/api/auth/verify', {
+    //   headers: {
+    //     'x-access-token': localStorage.getItem('token'),
+    //   },
+    // })
+    
+
+    // const data = await req.json()
+
+
+    
+
+
   }
 
-  useEffect(() => {
+
+
+  
+  
+  
+  useEffect(async () => {
+    dispatch({ type: 'pro-data', result: 10
+  })
+    function testRedux() {
+      return {
+        type: 'TEST'
+      };
+    }
+     function incrementAsync() {
+      return dispatch => {
+        console.log("DISPATCH",dispatch())
+        setTimeout(() => {
+          // You can invoke sync or async actions with `dispatch`
+          dispatch(testRedux());
+          dispatch({ type: 'pro-data', result: 10
+        })
+        }, 1000);
+      };
+    }
+     incrementAsync()
     const token = localStorage.getItem('token')
     if (token) {
       const user = jwt.decode(token)
@@ -76,8 +124,9 @@ const Messenger = () => {
         // history.replace('/login')
         router.replace('/login')
       } else {
-        router.push('/messenger')
         populateQuote()
+        router.push('/messenger')
+       
       }
     } else {
       router.push('/login')

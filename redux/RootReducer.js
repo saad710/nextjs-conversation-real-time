@@ -1,5 +1,6 @@
 import { combineReducers } from "redux";
 import TestReducer from './test/TestReducer';
+import AuthReducer from './auth/AuthReducer';
 
 
 
@@ -7,6 +8,7 @@ import TestReducer from './test/TestReducer';
 const RootReducers = combineReducers({
  
   TestReducer,
+  AuthReducer,
  
 });
 

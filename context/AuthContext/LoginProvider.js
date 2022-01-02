@@ -2,17 +2,7 @@ import React, { createContext } from 'react';
 import { useEffect, useReducer } from 'react';
 
 const initialState = {
-    user: null,
-    pro:[
-        {
-            "name" : "saad",
-            "id" : "5"
-        },
-        {
-            "name" : "ifrat",
-            "id" : "6"
-        },
-    ],
+    user: null
 }
 
 const reducer = (state,action) => {
@@ -21,12 +11,7 @@ const reducer = (state,action) => {
             return {
                 ...state,
                 user: action.result ,
-            };
-            case 'pro-data' :
-            return {
-                ...state,
-                pro:action.result
-            }     
+            }      
             default: 
             return state;
     }
@@ -40,7 +25,7 @@ const LoginProvider = (props) => {
     const { children } = props;
 
     return (
-        <UserContext.Provider value={{user: state.user, dispatch, pro:state.pro}}>
+        <UserContext.Provider value={{user: state.user, dispatch}}>
             {children}
         </UserContext.Provider>
     );

@@ -11,6 +11,7 @@ import CustomScrollBars from 'react-custom-scrollbars'
 import FeatherIcon from 'feather-icons-react'
 import { io } from 'socket.io-client'
 import { blue } from '@mui/material/colors';
+import { useDispatch, useSelector } from 'react-redux';
 
 const trackHorizontal = {
   'minWidth': '100%',
@@ -28,7 +29,7 @@ const Messenger = () => {
   const scrollRef = useRef()
   const socket = useRef()
   const router = useRouter()
-  const { user, dispatch } = useContext(UserContext)
+  const { user,dispatch } = useContext(UserContext)
   const [conversation, setConversation] = useState([])
   console.log(conversation)
   const [currentChat, setCurrentChat] = useState()
@@ -42,6 +43,9 @@ const Messenger = () => {
   const [redId, setRedId] = useState('')
   console.log(onlineUsers)
   console.log(user)
+  // const dispatch = useDispatch();
+  // const active = useSelector((state) => state.TestReducer.test);
+  // console.log(active)
 
   // const [userData, setUserData] = useState(null)
   // console.log(userData)
@@ -57,6 +61,7 @@ const Messenger = () => {
     if (data) {
       // setUserData(data)
       dispatch({ type: 'Login_Success', result: data })
+      
     } else {
       alert(data.error)
     }
@@ -71,6 +76,7 @@ const Messenger = () => {
         // history.replace('/login')
         router.replace('/login')
       } else {
+        router.push('/messenger')
         populateQuote()
       }
     } else {

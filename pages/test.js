@@ -2,32 +2,17 @@ import { useState, useEffect, useContext } from 'react';
 import { useRouter } from 'next/router'
 import { Button } from '@mui/material';
 import jwt from 'jsonwebtoken'
-import { UserContext } from '../context/AuthContext/LoginProvider';
+import { useDispatch, useSelector } from 'react-redux';
+
 
 
 const Test = () => {
     const router = useRouter()
-    const {user , dispatch} = useContext(UserContext)
-    console.log(user)
-
-    // const [userData, setUserData] = useState(null)
-    // console.log(userData)
-    async function populateQuote() {
-        const req = await fetch('http://localhost:3000/api/auth/verify', {
-            headers: {
-                'x-access-token': localStorage.getItem('token'),
-            },
-        })
-
-        const data = await req.json()
-        console.log(data)
-        if (data) {
-            // setUserData(data)
-            dispatch({type:'Login_Success', result: data})
-        } else {
-            alert(data.error)
-        }
-    }
+     const dispatch = useDispatch();
+    const active = useSelector((state) => state.TestReducer.test);
+    console.log(active)
+  
+  
 
     useEffect(() => {
         const token = localStorage.getItem('token')
@@ -38,7 +23,9 @@ const Test = () => {
                 // history.replace('/login')
                 router.replace('/login')
             } else {
-                populateQuote()
+                dispatch({ type: 'test-data', result: active.map(a => {
+                    return {...a , active:'yes'}
+                  }) })
                 
             }
         }
@@ -55,17 +42,13 @@ const Test = () => {
         // history.replace('/login')
     }
 
-    if (!user) {
-        return null;
-    }
-    else {
         return (
             <div>
-                <h1>{user?.username}</h1>
+                <h1>hello</h1>
                 <Button onClick={handleLogout}>logout</Button>
             </div>
         );
-    }
+    
 };
 
 export default Test;

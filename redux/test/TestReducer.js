@@ -1,0 +1,25 @@
+const INIT_STATE = {
+   test:[
+    {
+        "name" : "saad",
+        "id" : "5"
+    },
+    {
+        "name" : "ifrat",
+        "id" : "6"
+    },
+],
+  };
+
+const TestReducer = (state =INIT_STATE ,action) => {
+    switch(action.type){
+        case 'test-data':
+            return {
+                ...state,
+                test: action.result ,
+            }      
+            default: 
+            return state;
+    }
+}
+export default TestReducer;

@@ -219,26 +219,30 @@ const Messenger = () => {
     const findCurrentChatId = findCurrentChat?.toString()
     console.log(findCurrentChatId)
 
-    axios
-      .get(`http://localhost:3000/api/user/getSingleUser?userId=${findCurrentChatId}`)
-      .then((response) => {
-        const data = response.data
-        console.log(data)
-        setFindChatUser(data.username)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-    axios
-      .get(`http://localhost:3000/api/user/getFriend?userId=${user?._id}`)
-      .then((response) => {
-        const data = response.data
-        console.log(data)
-        setOnlineMatch(data)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+ if(user){
+ if(findCurrentChatId){
+  axios
+  .get(`http://localhost:3000/api/user/getSingleUser?userId=${findCurrentChatId}`)
+  .then((response) => {
+    const data = response.data
+    console.log(data)
+    setFindChatUser(data.username)
+  })
+  .catch((err) => {
+    console.log(err)
+  })
+ }
+axios
+  .get(`http://localhost:3000/api/user/getFriend?userId=${user?._id}`)
+  .then((response) => {
+    const data = response.data
+    console.log(data)
+    setOnlineMatch(data)
+  })
+  .catch((err) => {
+    console.log(err)
+  })
+ }
   }, [currentChat, user])
 
   useEffect(() => {

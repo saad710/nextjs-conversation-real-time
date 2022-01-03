@@ -6,13 +6,15 @@ import { blue } from '@mui/material/colors';
 
 const Conversation = (props) => {
     const { conversation, currentUser, redId } = props;
+    console.log(currentUser)
     console.log(redId)
     const [user, setUser] = useState('')
     console.log(user?.username)
 
+    const friendId = conversation?.members?.find((m) => m !== currentUser?._id)
+    console.log(friendId)
+
     useEffect(() => {
-        const friendId = conversation.members.find((m) => m !== currentUser._id)
-        console.log(friendId)
         const getUser = async () => {
             try {
                 const res = await axios(
@@ -25,7 +27,8 @@ const Conversation = (props) => {
             }
         }
         getUser()
-    }, [currentUser, conversation])
+      
+    }, [friendId])
 
     return (
         <div>

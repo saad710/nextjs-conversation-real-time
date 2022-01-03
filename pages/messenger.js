@@ -46,92 +46,41 @@ const Messenger = () => {
   const [onlineUsers, setOnlineUsers] = useState([])
   const [redId, setRedId] = useState('')
   console.log(onlineUsers)
-  // console.log(user)
- 
-  // console.log(user)
-
-  // const [userData, setUserData] = useState(null)
-  // console.log(userData)
+  
   async function populateQuote() {
+    const req = await fetch('http://localhost:3000/api/auth/verify', {
+      headers: {
+        'x-access-token': localStorage.getItem('token'),
+      },
+    })
 
-
-
-    return (dispatch) => {     //nameless functions
-
-      console.log({dispatch})
-      debugger
-         return fetch('http://localhost:3000/api/auth/verify', {
-            headers: {
-              'x-access-token': localStorage.getItem('token'),
-            },
-          }).then(res=>res.json()).then(res=>{
-            // console.log(dispatch)
-            dispatch({ type: 'Login', result: res })
-            console.log(res)
-          
-          })
-      
-         
-         
-          
-    };
-    
-    // const req = await fetch('http://localhost:3000/api/auth/verify', {
-    //   headers: {
-    //     'x-access-token': localStorage.getItem('token'),
-    //   },
-    // })
-    
-
-    // const data = await req.json()
-
-
-    
-
-
+    const data = await req.json()
+    console.log(data)
+    if (data) {
+      // setUserData(data)
+      dispatch({ type: 'Login', result: data })
+      console.log(user)
+    } else {
+      alert(data.error)
+    }
   }
 
-
-
-  
-  
-  
-  useEffect(async () => {
-    dispatch({ type: 'pro-data', result: 10
-  })
-    function testRedux() {
-      return {
-        type: 'TEST'
-      };
-    }
-     function incrementAsync() {
-      return dispatch => {
-        console.log("DISPATCH",dispatch())
-        setTimeout(() => {
-          // You can invoke sync or async actions with `dispatch`
-          dispatch(testRedux());
-          dispatch({ type: 'pro-data', result: 10
-        })
-        }, 1000);
-      };
-    }
-     incrementAsync()
+  useEffect(() => {
     const token = localStorage.getItem('token')
     if (token) {
-      const user = jwt.decode(token)
-      if (!user) {
+      const userToken = jwt.decode(token)
+      if (!userToken) {
         localStorage.removeItem('token')
         // history.replace('/login')
         router.replace('/login')
       } else {
         populateQuote()
-        router.push('/messenger')
-       
       }
     } else {
       router.push('/login')
     }
   }, [])
+
 
 
   useEffect(() => {

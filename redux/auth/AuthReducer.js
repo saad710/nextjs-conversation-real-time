@@ -1,5 +1,5 @@
 const INIT_STATE = {
-    user: "TEST"
+    user: null
 }
  
  const AuthReducer = (state =INIT_STATE ,action) => {
@@ -10,9 +10,7 @@ const INIT_STATE = {
                         ...state,
                         user: action.result ,
                     }
-                    case "TEST":{
-                        return "TEST"
-                    }      
+                      
                     default: 
                     return state;
             }

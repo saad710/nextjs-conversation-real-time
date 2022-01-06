@@ -33,8 +33,10 @@ const Messenger = () => {
   const router = useRouter()
   const user = useSelector((state) => state.AuthReducer.user);
   console.log(user)
+  const conversation = useSelector((state) => state.ConversationReducer.conversation);
+  console.log(conversation)
   // const { user,dispatch } = useContext(UserContext)
-  const [conversation, setConversation] = useState([])
+  // const [conversation, setConversation] = useState([])
   console.log(conversation)
   const [currentChat, setCurrentChat] = useState()
   const [messages, setMessages] = useState([])
@@ -123,7 +125,11 @@ const Messenger = () => {
         const res = await axios.get(
           `http://localhost:3000/api/conversation/getSpecificUserConversation?userId=${user?._id}`,
         )
-        setConversation(res?.data)
+        // setConversation(res?.data)
+    
+      // conversation.push(res.data)
+      dispatch({type:'Get-Conversation', result : res.data })
+  
         setCurrentChat(res?.data[0])
         console.log(res.data)
       } catch (err) {
@@ -131,7 +137,25 @@ const Messenger = () => {
       }
     }
     getConversations()
-  }, [user, setCurrentChat])
+  },[user])
+
+//   const someFn = useCallback(() => {
+//     const getConversations = async () => {
+//       try {
+//         const res = await axios.get(
+//           `http://localhost:3000/api/conversation/getSpecificUserConversation?userId=${user?._id}`,
+//         )
+//         // setConversation(res?.data)
+//         dispatch({type:'Get-Conversation', result : res.data })
+//         setCurrentChat(res?.data[0])
+//         console.log(res.data)
+//       } catch (err) {
+//         console.log(err)
+//       }
+//     }
+//     getConversations()
+
+//  }, [user,conversation]);
 
 
 
@@ -245,15 +269,15 @@ axios
  }
   }, [currentChat, user])
 
-  useEffect(() => {
-    let mData = []
-    conversation.map((all) => {
-      mData.push(all.members.find((data) => data !== user._id))
-    })
-    console.log(mData)
-    const filterSameData = [...new Set(mData.map((unique) => unique))]
-    console.log(filterSameData)
-  })
+  // useEffect(() => {
+  //   let mData = []
+  //   conversation.map((all) => {
+  //     mData.push(all.members.find((data) => data !== user._id))
+  //   })
+  //   console.log(mData)
+  //   const filterSameData = [...new Set(mData.map((unique) => unique))]
+  //   console.log(filterSameData)
+  // })
 
   const handleLogout = () => {
     localStorage.removeItem('token')
@@ -266,7 +290,7 @@ axios
   } else {
     return (
       <div>
-        <Topbar handleLogout={handleLogout} user={user} dispatch={dispatch} conversation={conversation} setConversation={setConversation} />
+        <Topbar handleLogout={handleLogout} user={user}  conversation={conversation}  />
         <Card sx={{ display: "flex", p: 0, m: 5 }} style={{width:'100vh',backgroundColor:'#F0F8FF'}} variant="outlined">
           <Grid container >
 
@@ -301,6 +325,7 @@ axios
                     <Conversation conversation={conv} currentUser={user} redId={redId} />
                   </div>
                 ))}
+                {/* <Conversation conversation ={conversation} currentUser={user} redId={redId}/> */}
               </CustomScrollBars>
             </Grid>
             

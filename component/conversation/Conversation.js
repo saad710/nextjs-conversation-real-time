@@ -3,9 +3,11 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import MarkUnreadChatAltTwoToneIcon from '@mui/icons-material/MarkUnreadChatAltTwoTone';
 import { blue } from '@mui/material/colors';
+import { ConnectingAirportsOutlined } from '@mui/icons-material';
 
 const Conversation = (props) => {
     const { conversation, currentUser, redId } = props;
+    console.log(conversation)
     console.log(currentUser)
     console.log(redId)
     const [user, setUser] = useState('')

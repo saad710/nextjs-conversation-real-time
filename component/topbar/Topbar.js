@@ -20,17 +20,35 @@ import PersonIcon from '@mui/icons-material/Person';
 import { List, ListItem, ListItemAvatar, ListItemButton, ListItemText } from '@mui/material';
 import { blue } from '@mui/material/colors';
 import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
 
 
 function SimpleDialog(props) {
-  const { onClose, open, addUser, setAddUser, user, dispatch, conversation } = props;
+  const { onClose, open, addUser, setAddUser, user,conversation} = props;
+  const dispatch = useDispatch();
+  
   console.log(conversation)
+  // const conv = useSelector((state) => state.ConversationReducer.conversation);
+  // console.log(conv)
+
+  // console.log(conversation)
 
   const handleListItemClick = (all) => {
+  //   let newConv = conv
+  //   newConv.push({
+  //     "members": [
+  //        user._id,
+  //         all._id
+  //     ],
+  // })
+  // dispatch({type:'Get-Conversation',result:ver})
+    console.log(all.username)
     console.log(all._id)
     const filteredItem = addUser.filter((ind) => {
       return ind._id !== all._id
     })
+  
+
     setAddUser(filteredItem)
     console.log(all)
     const bothUserId = {
@@ -48,7 +66,9 @@ function SimpleDialog(props) {
             .post(`http://localhost:3000/api/conversation/postConversation`, bothUserId)
             .then((response) => {
               console.log(response.data)
-              conversation.push(response.data)
+              // conversation.push(response.data)
+                conversation.push(response.data)
+              dispatch({type:'Get-Conversation',result:conversation})
             })
             .catch((err) => {
               console.log(err)
@@ -103,7 +123,7 @@ function SimpleDialog(props) {
 // };
 
 const Topbar = (props) => {
-  const { user, handleLogout, conversation, setConversation, dispatch } = props;
+  const { user, handleLogout, conversation} = props;
   const [sideUser, setSideUser] = useState([])
   const [addUser, setAddUser] = useState([])
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -156,7 +176,7 @@ const Topbar = (props) => {
 
   useEffect(() => {
     let combineData = []
-    conversation.map((con) => {
+    conversation?.map((con) => {
       const friendId = con.members.find((m) => m !== user._id)
       axios
         .get(`http://localhost:3000/api/user/getSingleUser?userId=${friendId}`)
@@ -279,8 +299,8 @@ const Topbar = (props) => {
           addUser={addUser}
           setAddUser={setAddUser}
           user={user}
-          dispatch={dispatch}
           conversation={conversation}
+         
         />
       </Container>
     </AppBar>

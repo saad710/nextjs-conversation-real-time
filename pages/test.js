@@ -11,8 +11,8 @@ const Test = () => {
      const dispatch = useDispatch();
     const active = useSelector((state) => state.TestReducer.test);
     console.log(active)
-    const proActive = useSelector((state) => state.TestReducer.pro)
-    console.log(proActive)
+    // const proActive = useSelector((state) => state.TestReducer.pro)
+    // console.log(proActive)
   
   
 

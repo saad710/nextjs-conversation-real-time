@@ -10,7 +10,7 @@ const INIT_STATE = {
     },
     
 ],
-pro: null,
+pro: [],
   };
 
 const TestReducer = (state =INIT_STATE ,action) => {
